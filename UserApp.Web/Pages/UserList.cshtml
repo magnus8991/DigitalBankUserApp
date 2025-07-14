@@ -22,8 +22,9 @@
                 <td>@user.BirthDate.ToShortDateString()</td>
                 <td>@(user.Gender == 'M' ? "Masculino" : "Femenino")</td>
                 <td>
-                    <a href="/UserEdit?id=@user.Id">Editar</a> |
-                    <a href="#" onclick="deleteUser(@user.Id)">Eliminar</a>
+                    <a asp-page="/UserEdit" asp-route-id="@user.Id">Editar</a>
+                    <a asp-page-handler="Delete" asp-route-id="@user.Id"
+                       onclick="return confirm('Está seguro que desea eliminar el usuario?');">Eliminar</a>
                 </td>
             </tr>
         }

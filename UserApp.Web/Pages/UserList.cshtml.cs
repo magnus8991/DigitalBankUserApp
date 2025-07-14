@@ -1,30 +1,36 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using UserApp.Models;
 
-namespace UserApp.Web.Pages;
-
-public class UserListModel : PageModel
+namespace UserApp.Web.Pages
 {
-    private readonly HttpClient _httpClient;
-
-    public UserListModel(IHttpClientFactory httpClientFactory)
+    public class UserListModel : PageModel
     {
-        _httpClient = httpClientFactory.CreateClient();
-        _httpClient.BaseAddress = new Uri("http://localhost:5001/api/");
-    }
+        private readonly HttpClient _http;
 
-    public IEnumerable<User> Users { get; set; } = Enumerable.Empty<User>();
-
-    public async Task OnGet()
-    {
-        try
+        public UserListModel(IHttpClientFactory httpClientFactory)
         {
-            Users = await _httpClient.GetFromJsonAsync<IEnumerable<User>>("user") ?? [];
+            _http = httpClientFactory.CreateClient();
+            _http.BaseAddress = new Uri("http://localhost:5001/api/"); // Ajusta si usas otro puerto/API URL
         }
-        catch(Exception ex)
+
+        public List<User> Users { get; set; } = new();
+
+        public async Task OnGetAsync()
         {
-            Console.WriteLine(ex);
-            Users = [];
+            var result = await _http.GetFromJsonAsync<List<User>>("user");
+            if (result != null)
+                Users = result;
+        }
+
+        public async Task<IActionResult> OnGetDeleteAsync(int id)
+        {
+            var response = await _http.DeleteAsync($"user/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Message"] = "User deleted successfully.";
+            }
+            return RedirectToPage();
         }
     }
 }
