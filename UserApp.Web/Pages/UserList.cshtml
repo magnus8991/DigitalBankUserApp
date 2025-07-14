@@ -1,0 +1,45 @@
+@page
+@model UserApp.Web.Pages.UserListModel
+
+<h2>Usuarios</h2>
+<br />
+<a class="menu-button" asp-page="/User">Crear Usuario</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha de nacimiento</th>
+            <th>Género</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.BirthDate.ToShortDateString()</td>
+                <td>@user.Gender</td>
+                <td>
+                    <a href="/UserEdit?id=@user.Id">Editar</a> |
+                    <a href="#" onclick="deleteUser(@user.Id)">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        async function deleteUser(id) {
+            if (confirm("Are you sure?")) {
+                const response = await fetch(`https://localhost:5001/api/user/${id}`, {
+                    method: "DELETE"
+                });
+                if (response.ok) location.reload();
+                else alert("Error deleting user.");
+            }
+        }
+    </script>
+}

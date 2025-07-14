@@ -1,0 +1,103 @@
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f4f8fb;
+    margin: 20px;
+    color: #333;
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+    form div {
+        margin-bottom: 15px;
+    }
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    button[type="submit"]:hover {
+        background-color: #2980b9;
+    }
+
+a.menu-button {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+    margin: 10px 0;
+}
+
+    a.menu-button:hover {
+        background-color: #1e8449;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+    table th, table td {
+        padding: 12px;
+        border: 1px solid #eee;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #3498db;
+        color: white;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+.actions a {
+    margin-right: 10px;
+    color: #2980b9;
+    text-decoration: none;
+}
+
+    .actions a:hover {
+        text-decoration: underline;
+    }

@@ -1,0 +1,28 @@
+@page
+@model UserApp.Web.Pages.UserModel
+
+<h2>Create User</h2>
+
+<form method="post">
+    <div>
+        <label>Name</label>
+        <input asp-for="User.Name" required />
+    </div>
+    <div>
+        <label>Birth Date</label>
+        <input asp-for="User.BirthDate" type="date" required />
+    </div>
+    <div>
+        <label>Gender</label>
+        <select asp-for="User.Gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+@if (Model.Message != null)
+{
+    <p>@Model.Message</p>
+}
