@@ -1,3 +1,10 @@
+-- Crear base de datos
+
+CREATE DATABASE IF NOT EXISTS UserAppDb;
+USE UserAppDb;
+
+-- Crear tabla Users
+
 CREATE TABLE Users (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(100),
@@ -5,9 +12,7 @@ CREATE TABLE Users (
     Gender CHAR(1)
 );
 
-
-
---PROCEDURE
+-- Crear procedimiento almacenado
 
 DELIMITER $$
 
