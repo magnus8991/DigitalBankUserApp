@@ -29,7 +29,7 @@ namespace UserApp.Web.Pages
         {
             var response = await _http.PutAsJsonAsync($"user/{User.Id}", User);
             if (!response.IsSuccessStatusCode) return BadRequest();
-            return RedirectToPage("/Index");
+            return RedirectToPage("/UserList");
         }
     }
 }
