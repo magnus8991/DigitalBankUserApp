@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UserApp.Models;
 
 namespace UserApp.Business;
 
 public interface IUserService
 {
-    Task<IEnumerable<User>> GetAllUsersAsync();
-    Task<User?> GetUserByIdAsync(int id);
-    Task AddUserAsync(User user);
-    Task UpdateUserAsync(User user);
-    Task DeleteUserAsync(int id);
+    List<User> GetAll();
+    User? GetById(int id);
+    void Add(User user);
+    void Update(User user);
+    void Delete(int id);
 }

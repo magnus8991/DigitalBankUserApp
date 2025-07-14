@@ -1,25 +1,25 @@
 @page
 @model UserApp.Web.Pages.UserModel
 
-<h2>Create User</h2>
+<h2>Crear Usuario</h2>
 
 <form method="post">
     <div>
-        <label>Name</label>
+        <label>Nombre</label>
         <input asp-for="User.Name" required />
     </div>
     <div>
-        <label>Birth Date</label>
+        <label>Fecha de nacimiento</label>
         <input asp-for="User.BirthDate" type="date" required />
     </div>
     <div>
-        <label>Gender</label>
+        <label>Género</label>
         <select asp-for="User.Gender" required>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
         </select>
     </div>
-    <button type="submit">Save</button>
+    <button type="submit">Registrar</button>
 </form>
 
 @if (Model.Message != null)

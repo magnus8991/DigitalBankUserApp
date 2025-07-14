@@ -1,0 +1,31 @@
+@@page "{id:int}"
+@model UserApp.Web.Pages.UserEditModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h2>Editar Usuario</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="User.Id" />
+
+    <div>
+        <label asp-for="User.Name"></label>
+        <input asp-for="User.Name" />
+    </div>
+
+    <div>
+        <label asp-for="User.BirthDate"></label>
+        <input asp-for="User.BirthDate" type="date" />
+    </div>
+
+    <div>
+        <label asp-for="User.Gender"></label>
+        <select asp-for="User.Gender">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+        </select>
+    </div>
+
+    <button type="submit">Guardar cambios</button>
+</form>

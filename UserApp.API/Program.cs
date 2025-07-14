@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using UserApp.Business;
-using UserApp.Data.Context;
-using UserApp.Data.Interfaces;
 using UserApp.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
 
 // Servicios DI
-builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseMySQL(connectionString));
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();

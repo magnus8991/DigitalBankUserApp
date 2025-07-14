@@ -1,29 +1,134 @@
-
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UserApp.Data.Context;
-using UserApp.Data.Interfaces;
+using System;
+using System.Data;
+using Microsoft.Extensions.Configuration;
+using MySqlConnector;
 using UserApp.Models;
 
 namespace UserApp.Data.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository
 {
-    private readonly UserDbContext _context;
+    private readonly string _connectionString;
 
-    public UserRepository(UserDbContext context)
+    public UserRepository(IConfiguration configuration)
     {
-        _context = context;
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync() => await _context.Users.ToListAsync();
-    public async Task<User?> GetByIdAsync(int id) => await _context.Users.FindAsync(id);
-    public async Task AddAsync(User user) { _context.Users.Add(user); await _context.SaveChangesAsync(); }
-    public async Task UpdateAsync(User user) { _context.Users.Update(user); await _context.SaveChangesAsync(); }
-    public async Task DeleteAsync(int id)
+    public List<User> GetAll()
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user != null) { _context.Users.Remove(user); await _context.SaveChangesAsync(); }
+        var users = new List<User>();
+
+        using var conn = new MySqlConnection(_connectionString);
+        using var cmd = new MySqlCommand("sp_User_CRUD", conn)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        cmd.Parameters.AddWithValue("in_Action", "SELECT");
+        cmd.Parameters.AddWithValue("in_Id", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_Name", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_BirthDate", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_Gender", DBNull.Value);
+
+        conn.Open();
+        using var reader = cmd.ExecuteReader();
+        while (reader.Read())
+        {
+            users.Add(new User
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+                Name = reader["Name"].ToString() ?? "",
+                BirthDate = Convert.ToDateTime(reader["BirthDate"]),
+                Gender = char.Parse(reader["Gender"].ToString())
+            });
+        }
+
+        return users;
+    }
+
+    public User? GetById(int id)
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        using var cmd = new MySqlCommand("sp_User_CRUD", conn)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        cmd.Parameters.AddWithValue("in_Action", "SELECT_BY_ID");
+        cmd.Parameters.AddWithValue("in_Id", id);
+        cmd.Parameters.AddWithValue("in_Name", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_BirthDate", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_Gender", DBNull.Value);
+
+        conn.Open();
+        using var reader = cmd.ExecuteReader();
+        if (reader.Read())
+        {
+            return new User
+            {
+                Id = Convert.ToInt32(reader["Id"]),
+                Name = reader["Name"].ToString() ?? "",
+                BirthDate = Convert.ToDateTime(reader["BirthDate"]),
+                Gender = char.Parse(reader["Gender"].ToString())
+            };
+        }
+
+        return null;
+    }
+
+    public void Insert(User user)
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        using var cmd = new MySqlCommand("sp_User_CRUD", conn)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        cmd.Parameters.AddWithValue("in_Action", "INSERT");
+        cmd.Parameters.AddWithValue("in_Id", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_Name", user.Name);
+        cmd.Parameters.AddWithValue("in_BirthDate", user.BirthDate);
+        cmd.Parameters.AddWithValue("in_Gender", user.Gender);
+
+        conn.Open();
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Update(User user)
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        using var cmd = new MySqlCommand("sp_User_CRUD", conn)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        cmd.Parameters.AddWithValue("in_Action", "UPDATE");
+        cmd.Parameters.AddWithValue("in_Id", user.Id);
+        cmd.Parameters.AddWithValue("in_Name", user.Name);
+        cmd.Parameters.AddWithValue("in_BirthDate", user.BirthDate);
+        cmd.Parameters.AddWithValue("in_Gender", user.Gender);
+
+        conn.Open();
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Delete(int id)
+    {
+        using var conn = new MySqlConnection(_connectionString);
+        using var cmd = new MySqlCommand("sp_User_CRUD", conn)
+        {
+            CommandType = CommandType.StoredProcedure
+        };
+
+        cmd.Parameters.AddWithValue("in_Action", "DELETE");
+        cmd.Parameters.AddWithValue("in_Id", id);
+        cmd.Parameters.AddWithValue("in_Name", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_BirthDate", DBNull.Value);
+        cmd.Parameters.AddWithValue("in_Gender", DBNull.Value);
+
+        conn.Open();
+        cmd.ExecuteNonQuery();
     }
 }

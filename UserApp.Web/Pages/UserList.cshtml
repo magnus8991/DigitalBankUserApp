@@ -20,7 +20,7 @@
             <tr>
                 <td>@user.Name</td>
                 <td>@user.BirthDate.ToShortDateString()</td>
-                <td>@user.Gender</td>
+                <td>@(user.Gender == 'M' ? "Masculino" : "Femenino")</td>
                 <td>
                     <a href="/UserEdit?id=@user.Id">Editar</a> |
                     <a href="#" onclick="deleteUser(@user.Id)">Eliminar</a>

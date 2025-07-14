@@ -6,50 +6,54 @@ namespace UserApp.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController(IUserService service) : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly IUserService _service = service;
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
+    {
+        _userService = userService;
+    }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public ActionResult<IEnumerable<User>> Get()
     {
-        var users = await _service.GetAllUsersAsync();
-        return Ok(users);
+        return Ok(_userService.GetAll());
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    public ActionResult<User> GetById(int id)
     {
-        var user = await _service.GetUserByIdAsync(id);
+        var user = _userService.GetById(id);
         if (user == null) return NotFound();
         return Ok(user);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(User user)
+    public IActionResult Post([FromBody] User user)
     {
-        await _service.AddUserAsync(user);
+        _userService.Add(user);
         return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, User user)
+    public IActionResult Put(int id, [FromBody] User user)
     {
-        if (id != user.Id) return BadRequest();
-        var existing = await _service.GetUserByIdAsync(id);
+        var existing = _userService.GetById(id);
         if (existing == null) return NotFound();
 
-        await _service.UpdateUserAsync(user);
+        user.Id = id;
+        _userService.Update(user);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public IActionResult Delete(int id)
     {
-        var existing = await _service.GetUserByIdAsync(id);
+        var existing = _userService.GetById(id);
         if (existing == null) return NotFound();
 
-        await _service.DeleteUserAsync(id);
+        _userService.Delete(id);
         return NoContent();
     }
 }
