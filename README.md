@@ -14,5 +14,5 @@ Adicional a lo anterior, es necesario resaltar que para poder crear la  base de 
 
 //Descripción y ejecución del proyecto UserApp.Web
 
-El proyecto Frontend (Web) de la solución se ejecuta en local como acostumbra a ejecutarse un proyecto realizado en C# con el framework .NET (en este caso la versión 8), y el proyecto a ejecutar tiene por nombre UserApp.API, que se encuentra alojado en la subcarpeta "UserApp.Web".
+El proyecto Frontend (Web) de la solución se ejecuta en local como acostumbra a ejecutarse un proyecto realizado en C# con el framework .NET (en este caso la versión 8) y adicional se incluyen páginas web utilizando vistas creadas con Razor, y el proyecto a ejecutar tiene por nombre UserApp.Web, que se encuentra alojado en la subcarpeta "UserApp.Web".
 En dicha solución Frontend se contempla el patrón MVC.
